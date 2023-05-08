@@ -1,0 +1,7 @@
+{
+  "tonchik-tm/pdf-to-html":"~1",
+  "require": {
+    "ext-mbstring": "*",
+    "ext-json": "*"
+  }
+}

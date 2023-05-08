@@ -1,0 +1,148 @@
+@media (max-width: 720px) {
+    .site {
+        padding: 0em;
+        grid-template-areas:
+        "header header header"
+        "content content content"
+        "footer footer footer";
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: minmax( 250px, 15%) 1fr 1fr;
+        grid-row-gap: 0;
+        grid-column-gap: 1em;
+    }
+
+    nav, .logo {
+        display: none;
+    }
+
+    .course_item {
+        width: 100%;
+    }
+
+    .content {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    footer {
+        position: relative;
+        /*z-index: 3; box-shadow: 0px -25px 10px 0px rgb(255, 255, 255);*/
+    }
+
+    header {
+        padding: 1em;
+    }
+
+    footer {
+        box-shadow: 0px 0px 24px 2px rgb(129 135 189 / 25%);
+        display: flex;
+    }
+
+    .shadow {
+        display: block;
+    }
+
+    .content .filter {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .content .filter label {
+        width: calc(50% - 5px);
+    }
+
+    .content .filter label select {
+        min-width: 100px;
+        width: 100%;
+        padding: 5px 25px;
+    }
+
+    .content .filter label span {
+        top: -19%;
+    }
+
+
+    .profile_block .right .item_list .profile_item {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 1em;
+    }
+
+    .profile_block .right .item_list .profile_item .name {
+        font-weight: 600;
+        color: #8f93a0;
+        font-size: 20px;
+    }
+
+    .profile_block .right .item_list .profile_item .value {
+        text-align: right;
+        font-weight: 600;
+        color: #4f5661;
+        font-size: 20px;
+    }
+
+    .section_profile_block .copyright {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 880px) {
+    .course_item {
+        width: 100%;
+    }
+
+    .new_item {
+        width: 100%;
+    }
+
+    .news_list {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1134px) and (min-width: 881px) {
+    .course_item {
+        width: calc((100% / 2) - 1em);
+    }
+}
+
+@media (min-width: 1134px) and (max-width: 1900px) {
+    .course_item {
+        width: calc((100% / 3) - 1em);
+    }
+}
+
+@media (min-width: 1900px) {
+    .course_item {
+        width: calc((100% / 4) - 1em);
+    }
+}
+
+@media (min-width: 1024px) {
+    .login_modal_label {
+        width: 100%;
+        max-width: 1000px;
+        min-width: 1000px;
+        justify-content: center;
+        gap: 3em;
+    }
+
+    .login_modal_label .login_top {
+        flex-direction: row;
+        width: 100%;
+    }
+
+
+    .login_modal_label .form label input {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .login_modal_label .form label {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
