@@ -41,9 +41,19 @@ class Platonus
         $result = json_decode($this->utf8_unescape($result), true);
         if ($result['login_status'] == 'success') {
             $this->token = $result['auth_token'];
-            $this->getUserData();
-            $this->getJournal();
-            $this->setResponse(['res' => true, 'data' => ['user' => $this->userData, 'journal' => $this->journal]]);
+//            $this->getUserData();
+//            $this->getJournal();
+            $this->setResponse(
+                [
+                    'res'  => true,
+                    'data' => [
+                        'token'      => $this->token,
+                        'JSESSIONID' => $this->JSESSIONID,
+                        'userId'     => $this->getUserId()
+                    ],
+
+                ]
+            );
         } else {
             $this->setResponse(['res' => false, 'data' => $result['message']]);
         }
@@ -53,8 +63,9 @@ class Platonus
     {
         $this->news();
         $news = $this->news;
-        $this->setResponse(['res' => true, 'data' => ['news' => $news]]);
+        $this->setResponse( $news);
     }
+
 
     public function getUserData()
     {
@@ -87,7 +98,41 @@ class Platonus
 
         // unset($result['photoBase64']);
 
-        $this->userData = $result;
+        return $result;
+    }
+
+    private function getUserId()
+    {
+        $url = $this->url . 'rest/mobile/personInfo/ru';
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'token: ' . $this->token
+            )
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 1);
+
+        $response = curl_exec($curl);
+
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+
+        $result = substr($response, $header_size);
+
+        curl_close($curl);
+
+
+        $result = json_decode($this->utf8_unescape($result), true);
+
+        // unset($result['photoBase64']);
+
+        return $result['studentID'];
     }
 
     private function getJSESSIONID($str)
@@ -115,13 +160,16 @@ class Platonus
         return $headers;
     }
 
-    private function getJournal()
+    public function getJournalAction()
     {
-        $year     = $this->getData('year');
-        $academic = $this->getData('academic');
+        $year       = $this->getData('year');
+        $academic   = $this->getData('academic');
+        $JSESSIONID = $this->getData('JSESSIONID');
+        $token      = $this->getData('token');
+        $userId     = $this->getData('userId');
 
 
-        $url = $this->url . 'journal/' . $year . '/' . $academic . '/' . $this->userData['studentID'];
+        $url = $this->url . 'journal/' . $year . '/' . $academic . '/' . $userId;
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
@@ -130,10 +178,10 @@ class Platonus
             $curl,
             CURLOPT_HTTPHEADER,
             array(
-                'Cookie: ' . $this->JSESSIONID . ';' . str_replace('JSESSIONID', 'sessionid', $this->JSESSIONID),
+                'Cookie: ' . $JSESSIONID . ';' . str_replace('JSESSIONID', 'sessionid', $JSESSIONID),
                 'Content-Type: application/json;charset=utf-8',
 
-                'token: ' . $this->token
+                'token: ' . $token
             )
         );
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -147,8 +195,14 @@ class Platonus
 
         curl_close($curl);
 
+        $this->setResponse(
+            json_decode($this->utf8_unescape($result), true)
+        );
 
-        $this->journal = json_decode($this->utf8_unescape($result), true);
+        $this->setResponse(
+            json_decode($this->utf8_unescape($result), true)
+        );
+        return;
     }
 
     private function news($page = 1)

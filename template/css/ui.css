@@ -1,0 +1,35 @@
+.progress{
+    height: 75px;
+    width: 75px;
+    position: relative;
+    display: inline-block;
+    margin: 0 0 0 auto;
+}
+.progressbar-text{
+    top: calc(50% + 3px) !important;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.progressbar-text::after{
+    display: block;
+    content: '%';
+}
+
+.progress.yellow .progressbar-text{
+    color: #e0b547;
+}
+.progress.green .progressbar-text{
+    color: #58874f;
+}
+.progress.red .progressbar-text{
+    color: #d44b34;
+}
+.progress.blue .progressbar-text{
+    color: #5b96d3;
+}
