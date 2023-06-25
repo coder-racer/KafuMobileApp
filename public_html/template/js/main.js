@@ -36,7 +36,7 @@ function login(event) {
     event.preventDefault();
     let login = "Васипёнок_Владислав"// document.querySelector('#login').value;
     let pass = "7JuzkC3d"//document.querySelector('#pass').value;
-    platon.auth(login, pass)
+    platon.LogIn(login, pass)
 }
 
 function logOut() {

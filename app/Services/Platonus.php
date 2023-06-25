@@ -1,28 +1,32 @@
 <?php
 
+namespace Services;
 class Platonus
 {
-    private $url = 'http://platon.kafu.kz/', $response = [
-        'res'  => false,
-        'data' => 'error method'
-    ], $token, $JSESSIONID, $userData, $journal, $news, $news5;
+    private string|null $url = null;
+    private string|null $token;
+    private string|null $JSESSIONID;
+    private string|null $userData;
+    private string|null $journal;
+    private string|null $news;
+    private string|null $news5;
+
+    public function __construct()
+    {
+        $this->url = env('PLATONUS_URL');
+    }
 
     public function getData($key)
     {
-        return isset($_POST[$key]) ? $_POST[$key] : (isset($_GET[$key]) ? $_GET[$key] : false);
-    }
-
-    private function setResponse($data)
-    {
-        $this->response = $data;
+        return $_POST[$key] ?? ($_GET[$key] ?? false);
     }
 
     public function loginAction()
     {
-        $url         = $this->url . 'rest/api/login';
-        $data        = ["login" => $this->getData('login'), "iin" => null, "password" => $this->getData('pass')];
+        $url = $this->url . 'rest/api/login';
+        $data = ["login" => $this->getData('login'), "iin" => null, "password" => $this->getData('pass')];
         $data_string = json_encode($data);
-        $curl        = curl_init($url);
+        $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -33,41 +37,39 @@ class Platonus
         );
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HEADER, 1);
-        $response         = curl_exec($curl);
-        $header_size      = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $response = curl_exec($curl);
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $this->JSESSIONID = $this->getJSESSIONID(substr($response, 0, $header_size));
-        $result           = substr($response, $header_size);
+        $result = substr($response, $header_size);
         curl_close($curl);
         $result = json_decode($this->utf8_unescape($result), true);
         if ($result['login_status'] == 'success') {
             $this->token = $result['auth_token'];
 //            $this->getUserData();
 //            $this->getJournal();
-            $this->setResponse(
+            return
                 [
-                    'res'  => true,
+                    'res' => true,
                     'data' => [
-                        'token'      => $this->token,
+                        'token' => $this->token,
                         'JSESSIONID' => $this->JSESSIONID,
-                        'userId'     => $this->getUserId()
+                        'userId' => $this->getUserId()
                     ],
 
-                ]
-            );
+                ];
         } else {
-            $this->setResponse(['res' => false, 'data' => $result['message']]);
+            return (['res' => false, 'data' => $result['message']]);
         }
     }
 
     public function getNewsAction()
     {
         $this->news();
-        $news = $this->news;
-        $this->setResponse( $news);
+        return ['data' => $this->news];
     }
 
 
-    public function getUserData()
+    public function getUserDataAction()
     {
         $url = $this->url . 'rest/mobile/personInfo/ru';
 
@@ -79,7 +81,7 @@ class Platonus
             CURLOPT_HTTPHEADER,
             array(
                 'Content-Type: application/json',
-                'token: ' . $this->token
+                'token: ' . $this->getData('token')
             )
         );
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -95,8 +97,6 @@ class Platonus
 
 
         $result = json_decode($this->utf8_unescape($result), true);
-
-        // unset($result['photoBase64']);
 
         return $result;
     }
@@ -137,12 +137,12 @@ class Platonus
 
     private function getJSESSIONID($str)
     {
-        $headers         = array();
+        $headers = array();
         $headersTmpArray = explode("\r\n", $str);
         for ($i = 0; $i < count($headersTmpArray); ++$i) {
             if (strlen($headersTmpArray[$i]) > 0) {
                 if (strpos($headersTmpArray[$i], ":")) {
-                    $headerName  = substr($headersTmpArray[$i], 0, strpos($headersTmpArray[$i], ":"));
+                    $headerName = substr($headersTmpArray[$i], 0, strpos($headersTmpArray[$i], ":"));
                     $headerValue = substr($headersTmpArray[$i], strpos($headersTmpArray[$i], ":") + 1);
                     if ($headerName != 'Set-Cookie') {
                         $headers[$headerName] = trim($headerValue);
@@ -162,11 +162,11 @@ class Platonus
 
     public function getJournalAction()
     {
-        $year       = $this->getData('year');
-        $academic   = $this->getData('academic');
+        $year = $this->getData('year');
+        $academic = $this->getData('academic');
         $JSESSIONID = $this->getData('JSESSIONID');
-        $token      = $this->getData('token');
-        $userId     = $this->getData('userId');
+        $token = $this->getData('token');
+        $userId = $this->getData('userId');
 
 
         $url = $this->url . 'journal/' . $year . '/' . $academic . '/' . $userId;
@@ -195,14 +195,7 @@ class Platonus
 
         curl_close($curl);
 
-        $this->setResponse(
-            json_decode($this->utf8_unescape($result), true)
-        );
-
-        $this->setResponse(
-            json_decode($this->utf8_unescape($result), true)
-        );
-        return;
+        return json_decode($this->utf8_unescape($result), true);
     }
 
     private function news($page = 1)
@@ -210,7 +203,7 @@ class Platonus
 
         $page = ($page - 1) * 5;
 
-        $url   = "https://kafu.edu.kz/news/page/" . $page;
+        $url = "https://kafu.edu.kz/news/page/" . $page;
         $agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
 
         $curl = curl_init($url);
@@ -241,22 +234,5 @@ class Platonus
             $input
         );
     }
-
-    public function getResponseArray()
-    {
-        return $this->response;
-    }
-
-    public function getResponseJSON()
-    {
-        return json_encode($this->response);
-    }
-
-    public function testAction()
-    {
-        $this->setResponse(['res' => true, 'data' => 'test Data']);
-    }
-
-    public function __construct() {}
 
 }

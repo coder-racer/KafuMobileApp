@@ -166,7 +166,7 @@
 <script src="/template/js/pwa.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="/template/js/progressBar.js"></script>
-<script src="/template/js/kafuApi.js"></script>
+<script src="/template/js/platonus.js"></script>
 <script src="/template/js/main.js"></script>
 
 </body>

@@ -159,6 +159,7 @@ class platonus {
 
             this.renderJournal(data['data']['journal']);
             this.userData = data['data']['user'];
+            console.log(data);
             this.renderProfile();
             document.querySelector('.login_modal').classList.remove('show');
         } else {
