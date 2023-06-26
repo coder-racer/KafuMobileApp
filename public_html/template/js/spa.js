@@ -11,8 +11,43 @@ class SPA {
     #globalBlocks = {}
     #globalEvents = {}
     #param = []
+    #loadEvent = []
+    animationPosition = 0
+
+    setAnimationPosition(current, next) {
+        let currentIndex = 0
+        let nextIndex = 0
+        document.querySelectorAll(".nav_bg span").forEach((el, index) => {
+            if (current == el.dataset.link) {
+                currentIndex = index;
+            }
+            if (next == el.dataset.link) {
+                nextIndex = index;
+            }
+        })
+        if (currentIndex > nextIndex)
+            this.animationPosition = 0
+        else
+            this.animationPosition = 1
+    }
+
+    #locationEvent = []
     #blockList = {
         'body': null, 'additional': null
+    }
+
+    addLocationEvent(callBack) {
+        this.#locationEvent.push(callBack)
+    }
+    addLoadEvent(callBack) {
+        this.#loadEvent.push(callBack)
+    }
+
+    pushLocationEvent() {
+        this.#locationEvent.forEach(el => el(this.#currentLocation))
+    }
+    pushLoadEvent() {
+        this.#loadEvent.forEach(el => el())
     }
 
     getMainTpl() {
@@ -68,6 +103,7 @@ class SPA {
         this.#body = this.#fullBlock.querySelector(body)
         this.setHistoryEvent()
         this.location(null, true, false)
+        this.pushLoadEvent();
     }
 
     setContent(content) {
@@ -128,11 +164,12 @@ class SPA {
 
         if (historyPush) history.pushState({url: historyList.url}, '', '/' + historyList.url)
         if (!url.length) url = this.#mainLocation
-
+        this.setAnimationPosition(this.#currentLocation, url)
+        let test = this.animationPosition
         if (animation) {
             this.hideContent(() => {
                 this.loadLocation(url, animation)
-            })
+            }, test)
         } else {
             this.loadLocation(url, animation)
         }
@@ -143,7 +180,10 @@ class SPA {
     loadLocation(url, animation) {
         this.clearAllEvents()
         this.clearContent()
+        this.setAnimationPosition(this.#currentLocation, url)
+        let test = this.animationPosition
         this.#currentLocation = url
+        this.pushLocationEvent()
         if (!this.templates.hasOwnProperty(url)) {
             let elem = document.createElement('script')
             elem.src = '/' + this.#tplFolder + '/' + url + '.js?v=' + Math.random()
@@ -153,90 +193,164 @@ class SPA {
                 this.location(this.#errorLocation)
             }
             elem.onload = () => {
+
                 this.templates[url]()
                 if (animation)
-                    this.showContent()
+                    this.showContent(() => {
+                    }, test)
             }
         } else {
             this.templates[url]()
             if (animation)
-                this.showContent()
+                this.showContent(() => {
+                }, test)
         }
     }
 
     hideContent(func = () => {
-    }) {
-        let to = ((document.body.offsetWidth / 2) + (this.#body.offsetWidth)) * -1;
-
-        App.animate(
-            [
-                {
-                    from: 0,
-                    to: 100,
-                    func: (x) => {
-                        this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+    },pos) {
+        if (pos === 1) {
+            let to = ((document.body.offsetWidth / 2) + (this.#body.offsetWidth)) * -1;
+            App.animate(
+                [
+                    {
+                        from: 0,
+                        to: 100,
+                        func: (x) => {
+                            this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+                        },
+                        delta: x => x
                     },
-                    delta: x => x
-                },
-                {
-                    from: 0,
-                    to: to,
-                    func: (x) => {
-                        // this.#body.style.marginLeft = `${x}px`
-                        this.#body.style.transform = `translateX(${x}px)`
+                    {
+                        from: 0,
+                        to: to,
+                        func: (x) => {
+                            // this.#body.style.marginLeft = `${x}px`
+                            this.#body.style.transform = `translateX(${x}px)`
+                        },
+                        delta: x => x
                     },
-                    delta: x => x
-                },
-                {
-                    from: 1,
-                    to: 0,
-                    func: (x) => {
-                        this.#body.style.opacity = x
+                    {
+                        from: 1,
+                        to: 0,
+                        func: (x) => {
+                            this.#body.style.opacity = x
+                        }
                     }
+                ]
+                , 300
+                , () => {
+                    func()
                 }
-            ]
-            , 300
-            , () => {
-                func()
-            }
-        )
+            )
+        } else {
+            let to = ((document.body.offsetWidth / 2) + (this.#body.offsetWidth)) * -1;
+            to *= -1;
+            App.animate(
+                [
+                    {
+                        from: 0,
+                        to: 100,
+                        func: (x) => {
+                            this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+                        },
+                        delta: x => x
+                    },
+                    {
+                        from: 0,
+                        to: to,
+                        func: (x) => {
+                            // this.#body.style.marginLeft = `${x}px`
+                            this.#body.style.transform = `translateX(${x}px)`
+                        },
+                        delta: x => x
+                    },
+                    {
+                        from: 1,
+                        to: 0,
+                        func: (x) => {
+                            this.#body.style.opacity = x
+                        }
+                    }
+                ]
+                , 300
+                , () => {
+                    func()
+                }
+            )
+        }
     }
 
     showContent(func = () => {
-    }) {
-
-        let from = (document.body.offsetWidth / 2) + (this.#body.offsetWidth / 2);
-
-        App.animate(
-            [
-                {
-                    from: 100,
-                    to: 0,
-                    func: (x) => {
-                        this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+    }, pos) {
+        if (pos === 1) {
+            let from = (document.body.offsetWidth / 2) + (this.#body.offsetWidth / 2);
+            App.animate(
+                [
+                    {
+                        from: 100,
+                        to: 0,
+                        func: (x) => {
+                            this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+                        },
+                        delta: x => x
                     },
-                    delta: x => x
-                },
-                {
-                    from: from,
-                    to: 0,
-                    func: (x) => {
-                        //  this.#body.style.marginLeft = `${x}px`
-                        this.#body.style.transform = `translateX(${x}px)`
+                    {
+                        from: from,
+                        to: 0,
+                        func: (x) => {
+                            //  this.#body.style.marginLeft = `${x}px`
+                            this.#body.style.transform = `translateX(${x}px)`
+                        },
+                        delta: x => x
                     },
-                    delta: x => x
-                },
-                {
-                    func: (x) => {
-                        this.#body.style.opacity = x
+                    {
+                        func: (x) => {
+                            this.#body.style.opacity = x
+                        }
                     }
+                ]
+                , 300
+                , () => {
+                    func()
                 }
-            ]
-            , 300
-            , () => {
-                func()
-            }
-        )
+            )
+        } else {
+            let from = (document.body.offsetWidth / 2) + (this.#body.offsetWidth / 2);
+            from *= -1
+
+
+            App.animate(
+                [
+                    {
+                        from: 100,
+                        to: 0,
+                        func: (x) => {
+                            this.#body.style.filter = `grayscale(${Math.round(x)}%)`
+                        },
+                        delta: x => x
+                    },
+                    {
+                        from: from,
+                        to: 0,
+                        func: (x) => {
+                            //  this.#body.style.marginLeft = `${x}px`
+                            this.#body.style.transform = `translateX(${x}px)`
+                        },
+                        delta: x => x
+                    },
+                    {
+                        func: (x) => {
+                            this.#body.style.opacity = x
+                        }
+                    }
+                ]
+                , 300
+                , () => {
+                    func()
+                }
+            )
+        }
     }
 
     animate(option = [], duration = 500, callBack = null) {
@@ -295,6 +409,7 @@ class SPA {
         }
 
         let thisClass = this
+
         function eventPush(event) {
             let elem = []
             if (thisClass.#eventList[event.type]?.['list']) {

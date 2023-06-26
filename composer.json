@@ -1,0 +1,17 @@
+{
+    "name": "user/kf.ru",
+    "autoload": {
+        "psr-4": {
+            "User\\KfRu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "coder racer",
+            "email": "admin@racer-cr.ru"
+        }
+    ],
+    "require": {
+        "tecnickcom/tcpdf": "^6.6"
+    }
+}

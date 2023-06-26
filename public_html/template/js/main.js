@@ -44,7 +44,6 @@ function logOut() {
     location.reload()
 }
 
-document.querySelector('footer').innerHTML = document.querySelector('.nav_bg').innerHTML;
 
 window.addEventListener("message", function (event) {
     if (event.data == 'slide:start') {
@@ -54,15 +53,32 @@ window.addEventListener("message", function (event) {
 
 window.App = new SPA('body', '.container_app')
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(()=> {
+    document.querySelector('footer').innerHTML = document.querySelector('.nav_bg').innerHTML;
+    App.addLocationEvent(()=>{
+        let link = App.getLocation()
+        clearMenu()
+        document.querySelectorAll(`[data-link="${link}"]`).forEach(el => {
+            el.classList.add("active")
+            document.querySelector(".header_left .icon").innerHTML = el.querySelector('i').outerHTML
+            document.querySelector(".header_right .name").innerHTML = el.querySelector('.text').innerText
+        })
+    })
+
+    App.addLoadEvent(()=>{
         App.on("click", ".nav_item", (nav)=> {
-            document.querySelectorAll(".nav_item").forEach(el => {
-                el.classList.remove('active');
-            });
+            clearMenu()
             nav.classList.add("active")
             App.location(nav.dataset.link)
         }, true)
-    }, 500)
+    })
+
+
+
 
 });
+
+
+

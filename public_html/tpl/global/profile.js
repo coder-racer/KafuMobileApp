@@ -2,8 +2,18 @@ App.templates['global/profile'] = () => {
     App.setContent(`
         <section id="section_profile">
             <div class="section_profile_block">
-                <div class="profile_block">
-                   
+                <div class="profile_block_flex">
+                    <div class="docs">
+                        <span>Выберите справку</span>
+                        <select id="select_docs" name="">
+                            
+                        </select>
+                           <div class="button get_doc">Выдать справку</div>
+                    </div>
+                    <div class="profile_block">
+                       
+                    </div>
+                    
                 </div>
                 <div class="copyright">
                     <div class="copyright_arrow"><i class="las la-angle-up"></i></div>
@@ -27,8 +37,10 @@ App.templates['global/profile'] = () => {
 
         </section>
     `);
+
+    let fio = ``
+
     platon.getProfile((data) => {
-        console.log(data);
 
         let description = ``;
         let profName = data.professionName.split(' - ')
@@ -37,7 +49,7 @@ App.templates['global/profile'] = () => {
         description += itemData("Номер группы", data.groupName)
         description += itemData("Курс", data.courseNumber)
         description += itemData("GPA", data.gpa)
-
+        fio = data.lastName + ' ' + data.firstName + ' ' + data.patronymic
         App.bind('.profile_block',
             itemProfile(
                 data.lastName + ' ' + data.firstName + ' ' + data.patronymic,
@@ -46,8 +58,25 @@ App.templates['global/profile'] = () => {
             )
         )
 
+        platon.getListDocs((data)=>{
+            let html = ``
+            data.forEach(el => html += `<option value="${el}">${el}</option>`)
+
+            App.bind('#select_docs', html);
+        })
+
     });
 
+    App.on('click', '.get_doc', ()=>{
+        const baseUrl = window.location.origin;
+        const url = new URL("/getDocument", baseUrl);
+
+        url.searchParams.append("fio", fio);
+        url.searchParams.append("name", App.getBlock('#select_docs').value);
+
+        window.open(url.toString(), '_blank');
+
+    })
 
     function itemData(name, value = null)
     {

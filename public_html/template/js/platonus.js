@@ -9,6 +9,12 @@ class platonus {
         }
     }
 
+    getListDocs(callBack){
+        this.getData('getListDocs', {}, (data)=>{
+            callBack(data)
+        })
+    }
+
     getData(url, data, callback = function () {
     }) {
         const formData = new FormData();
@@ -29,11 +35,20 @@ class platonus {
     }
 
 
-    getProfile(callBack)
-    {
-        this.getData('getUserData', [], (el) =>{
+    getProfile(callBack) {
+        this.getData('getUserData', {}, (el) => {
             callBack(el);
         })
+    }
+
+    getGrade(callBack) {
+        this.getData('getGrade', {
+                'username': localStorage.getItem('login'),
+                'password': localStorage.getItem('pass')
+            }
+            , (el) => {
+                callBack(el);
+            })
     }
 
 

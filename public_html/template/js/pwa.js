@@ -11,8 +11,8 @@ window.addEventListener('beforeinstallprompt', function(e) {
     let addToHomeScreenBtn = document.getElementById('add-to-home-screen-btn');
     let skipAddToHomeScreenBtn = document.getElementById('skip-add-to-home-screen-btn');
 
-    //if (showAddToHomeScreen) {
-    if (true) {
+    if (showAddToHomeScreen) {
+    // if (true) {
         addToHomeScreen.classList.add("active");// = 'block';
 
         addToHomeScreenBtn.addEventListener('click', function() {

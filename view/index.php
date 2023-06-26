@@ -113,6 +113,12 @@
                     Журнал
                 </span>
             </span>
+            <span data-link="global/grades" class="nav_item" id="news">
+                <i class="las la-graduation-cap"></i>
+                <span class="text">
+                    Оценки
+                </span>
+            </span>
             <span data-link="global/news/list" class="nav_item" id="news">
                 <i class="las la-newspaper"></i>
                 <span class="text">

@@ -1,6 +1,7 @@
 <?php
 require_once '../app/Core/App.php';
 require_once '../app/Core/Utils.php';
+require_once '../vendor/autoload.php';
 
 if (env("DEBUG")) {
     ini_set('display_errors', 1);

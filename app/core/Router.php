@@ -83,6 +83,7 @@ class Router
                 // Проверка, являются ли данные массивом или объектом,
                 // который можно преобразовать в массив
                 if (is_array($data) || ($data instanceof \ArrayAccess && $data instanceof \Traversable)) {
+                    header('Content-Type: application/json');
                     echo json_encode($data);
                 } elseif (is_bool($data)) {
                     echo $data ? 'true' : 'false';
@@ -98,5 +99,6 @@ class Router
         // Если контроллер или метод не найдены
         echo '404 Not Found';
     }
+
 
 }
