@@ -1,6 +1,6 @@
 <?php
-require_once '../app/Core/App.php';
-require_once '../app/Core/Utils.php';
+require_once '../app/сore/App.php';
+require_once '../app/сore/Utils.php';
 require_once '../vendor/autoload.php';
 
 if (env("DEBUG")) {
