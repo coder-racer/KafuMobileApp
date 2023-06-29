@@ -56,7 +56,7 @@ App.templates['global/journal'] = () => {
         const colors = ['blue', 'yellow', 'green', 'red'];
         let color = colors[num % 4];
         if (data.centerMark > 80) color = 'green';
-        else if (data.centerMark > 70) color = 'blue';
+        else if (data.centerMark > 69) color = 'blue';
         else if (data.centerMark > 49) color = 'yellow';
         else color = 'red';
         const exams = data.exams.filter(el => el instanceof Object && !Array.isArray(el) && el !== null).map(el => examsItem(el));

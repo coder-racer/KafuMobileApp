@@ -27,11 +27,19 @@ App.templates['global/news/list'] = () => {
     })
 
     function elementNew(data) {
+        let img = `<img class="non_image" src="https://kafu.edu.kz/wp-content/themes/kafu/images/header/building-logo.svg" alt="">`
+        if (data.img)
+            img = `<img src="${data.img}" alt="">`
         return `
             <span data-href="${data.url}" class="new_item disable">
-                <img src="${data.img}" alt="">
-                <div class="name">
-                    ${data.title}
+                ${img}
+                <div class="info">
+                    <div class="name">
+                        ${data.title}
+                    </div>
+                    <div class="desc">
+                        ${data.text}
+                    </div>
                 </div>
             </span>
         `;
