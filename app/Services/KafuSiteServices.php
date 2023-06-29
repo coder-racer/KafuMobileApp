@@ -2,7 +2,7 @@
 
 namespace Services;
 
-use core\HttpRequest\HttpRequest;
+use Core\HttpRequest\HttpRequest;
 use Symfony\Component\DomCrawler\Crawler;
 
 class KafuSiteServices
