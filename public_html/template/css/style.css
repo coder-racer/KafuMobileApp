@@ -5,6 +5,9 @@
     font-family: 'Open Sans', sans-serif;
     background: none;
     text-decoration: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 body {
@@ -90,26 +93,11 @@ button:hover {
     }
 }
 
-/*.container{*/
-/*    margin: 0 auto;*/
-/*    width: 1024px;*/
-/*    border: 1px solid black;*/
-/*}*/
 .site {
     width: 100svw;
     min-height: 100svh;
     height: 100svh;
     padding: 1em;
-
-    /*display: grid;*/
-    /*grid-template-areas:*/
-    /*"logo header header"*/
-    /*"nav content content"*/
-    /*"nav content content";*/
-    /*grid-template-rows: auto 1fr;*/
-    /*grid-template-columns: minmax( 250px, 15%) 1fr;*/
-    /*grid-row-gap: 10px;*/
-    /*grid-column-gap: 1em;*/
     display: grid;
     grid-template-areas:
     "logo header"
@@ -503,6 +491,7 @@ nav {
 }
 
 .new_item .non_image{
+    background: linear-gradient(45deg, #86cfe8, #328ded);
     object-fit: contain;
 }
 
@@ -1307,4 +1296,85 @@ select {
 }
 .news_list{
     padding-bottom: 100px;
+}
+
+.wp-block-gallery{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.wp-block-gallery figure{
+    display: inline-block;
+    max-width: calc(50% - 10px);
+}
+.wp-block-gallery img {
+    width: 100%;
+    object-fit: cover;
+}
+#section_new{
+    padding-bottom: 100px;
+    font-weight: 600;
+    color: #8f93a0;
+    font-size: 20px;
+}
+
+#section_new a{
+    color: #09b4ef;
+}
+
+#section_new p{
+    text-indent: 1.5em;
+    margin-top: 20px;
+}
+
+#section_new li{
+    text-indent: 1.5em;
+    margin-top: 25px;
+}
+
+#section_new img{
+    display: block;
+    max-width: 100%;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#section_new h1{
+    position: relative;
+    font-weight: 700;
+    color: #4f5661;
+    font-size: 25px;
+    padding-bottom: 40px;
+}
+
+#section_new h1:after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    bottom: 22px;
+    background: #e9e9e9;
+}
+
+#section_new h2{
+    position: relative;
+    font-weight: 700;
+    color: #4f5661;
+    font-size: 25px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#section_new h2:after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    bottom: 22px;
+    background: #e9e9e9;
 }

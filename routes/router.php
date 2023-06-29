@@ -14,6 +14,7 @@ Router::setDefaultController([MainController::class, 'index']);
 Router::any('/api/getUserData', [PlatonusController::class, 'getUserData']);
 Router::any('/api/getJournal', [PlatonusController::class, 'getJournal']);
 Router::any('/api/getNews', [KafuSiteController::class, 'getNews']);
+Router::any('/api/getNew', [KafuSiteController::class, 'getNew']);
 Router::any('/api/login', [PlatonusController::class, 'login']);
 
 Router::any('/api/getGrade', [MoodleController::class, 'getGrade']);

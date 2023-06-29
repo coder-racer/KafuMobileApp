@@ -23,7 +23,8 @@ App.templates['global/news/list'] = () => {
     })
 
     App.on('click', ".new_item", (el)=>{
-        window.open(el.dataset.href, "_blank")
+        App.location('global/news/detail?url=' + encodeURIComponent(el.dataset.href))
+        //window.open(el.dataset.href, "_blank")
     })
 
     function elementNew(data) {

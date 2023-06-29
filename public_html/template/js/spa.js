@@ -115,6 +115,11 @@ class SPA {
         this.setContent('')
     }
 
+    getQueryParam(name) {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        return urlSearchParams.get(name);
+    }
+
     parseHistory(url = null) {
         let mabeUrl = location.href.replace(location.origin, '')
         let fullUrl = (url == null) ? mabeUrl : url
@@ -124,6 +129,8 @@ class SPA {
         let listUrl = fullUrl.split('#')
 
         let baseUrl = listUrl[0]
+        baseUrl = baseUrl.split('?')[0]
+        //alert(baseUrl)
 
         listUrl.shift()
 

@@ -16,4 +16,9 @@ class KafuSiteController
     {
         return $this->kafuSiteServices->getNewsAction();
     }
+
+    public function getNew(Request $request): array
+    {
+        return $this->kafuSiteServices->getNew($request->link);
+    }
 }

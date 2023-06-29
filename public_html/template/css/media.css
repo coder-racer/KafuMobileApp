@@ -104,6 +104,11 @@
     .news_list {
         width: 100%;
     }
+
+    .wp-block-gallery figure{
+        display: inline-block;
+        max-width: calc(100%);
+    }
 }
 
 @media (max-width: 1189px) and (min-width: 881px) {
@@ -120,7 +125,7 @@
     }
 }
 
-@media (min-width: 1134px) and (max-width: 1900px) {
+@media (min-width: 1182px) and (max-width: 1900px) {
     .course_item {
         width: calc((100% / 3) - 1em);
     }

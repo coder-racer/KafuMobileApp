@@ -9,8 +9,8 @@ class platonus {
         }
     }
 
-    getListDocs(callBack){
-        this.getData('getListDocs', {}, (data)=>{
+    getListDocs(callBack) {
+        this.getData('getListDocs', {}, (data) => {
             callBack(data)
         })
     }
@@ -94,6 +94,13 @@ class platonus {
                 console.log(e);
                 console.log("BAD KAFU");
             });
+    }
+
+    getNew(link, callback) {
+
+        this.getData('getNew', {'link': link}, (data) => {
+            callback(data)
+        })
     }
 
 
