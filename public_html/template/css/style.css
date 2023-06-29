@@ -218,6 +218,7 @@ nav {
 }
 
 .nav_bg .nav_item:hover {
+    border-radius: 18px 18px 0;
     transform: scale(1.1) translateX(20px);
     background: #FAFAFA;
 }
@@ -372,6 +373,10 @@ nav {
     border-radius: 20px;
     opacity: 0;
     animation: fadeIn 1s ease-in-out forwards; /* анимация появления */
+}
+
+.grade_item{
+    width: calc((100% / 2) - 1em) !important;
 }
 
 @keyframes fadeIn {
@@ -573,8 +578,9 @@ nav {
     opacity: 0;
     height: 0;
 }
-
 .site nav .nav_item.active {
+    position: relative;
+    border-radius: 18px 18px 0;
     transform: scale(1.1) translateX(20px);
     background: #FAFAFA;
 }

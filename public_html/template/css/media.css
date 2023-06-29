@@ -97,6 +97,9 @@
     .new_item {
         width: 100%;
     }
+    .grade_item{
+        width: 100% !important;
+    }
 
     .news_list {
         width: 100%;
@@ -105,6 +108,11 @@
 
 @media (max-width: 1134px) and (min-width: 881px) {
     .course_item {
+        width: calc((100% / 2) - 1em);
+    }
+
+
+    .new_item {
         width: calc((100% / 2) - 1em);
     }
 }
