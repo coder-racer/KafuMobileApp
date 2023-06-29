@@ -106,9 +106,12 @@
     }
 }
 
-@media (max-width: 1134px) and (min-width: 881px) {
+@media (max-width: 1189px) and (min-width: 881px) {
     .course_item {
         width: calc((100% / 2) - 1em);
+    }
+    .grade_item{
+        width: 100% !important;
     }
 
 
