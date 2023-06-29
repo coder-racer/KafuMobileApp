@@ -1278,3 +1278,6 @@ select {
     flex-wrap: wrap;
     gap: 40px;
 }
+.news_list{
+    padding-bottom: 100px;
+}

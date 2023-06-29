@@ -1,5 +1,6 @@
 <?php
 
+use Controller\KafuSiteController;
 use Core\Router;
 use Controller\MainController;
 use Controller\MoodleController;
@@ -12,7 +13,7 @@ Router::setDefaultController([MainController::class, 'index']);
 
 Router::any('/api/getUserData', [PlatonusController::class, 'getUserData']);
 Router::any('/api/getJournal', [PlatonusController::class, 'getJournal']);
-Router::any('/api/getNews', [PlatonusController::class, 'getNews']);
+Router::any('/api/getNews', [KafuSiteController::class, 'getNews']);
 Router::any('/api/login', [PlatonusController::class, 'login']);
 
 Router::any('/api/getGrade', [MoodleController::class, 'getGrade']);

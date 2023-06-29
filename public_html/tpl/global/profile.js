@@ -11,7 +11,7 @@ App.templates['global/profile'] = () => {
                            <div class="button get_doc">Выдать справку</div>
                     </div>
                     <div class="profile_block">
-                       
+                       <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                     </div>
                     
                 </div>
@@ -50,6 +50,7 @@ App.templates['global/profile'] = () => {
         description += itemData("Курс", data.courseNumber)
         description += itemData("GPA", data.gpa)
         fio = data.lastName + ' ' + data.firstName + ' ' + data.patronymic
+        document.querySelector('.lds-roller').remove()
         App.bind('.profile_block',
             itemProfile(
                 data.lastName + ' ' + data.firstName + ' ' + data.patronymic,
@@ -59,6 +60,7 @@ App.templates['global/profile'] = () => {
         )
 
         platon.getListDocs((data)=>{
+
             let html = ``
             data.forEach(el => html += `<option value="${el}">${el}</option>`)
 

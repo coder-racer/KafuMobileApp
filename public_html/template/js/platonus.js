@@ -86,27 +86,14 @@ class platonus {
     }
 
     getNews(callback) {
-        fetch('/api/getNews', {
-            method: 'GET',
-        }).then(response => response.json())
+        fetch('/api/getNews').then(response => response.json())
             .then(data => {
-                callback(this.parseNews(data.data))
+                callback(data)
             })
-            .catch(() => {
+            .catch((e) => {
+                console.log(e);
                 console.log("BAD KAFU");
             });
-    }
-
-    parseNews(newsText) {
-        const htmlDom = new DOMParser().parseFromString(newsText, 'text/html');
-        const listNews = htmlDom.querySelectorAll('.article-content.posts-list a');
-
-        return Array.from(listNews).map(el => ({
-            title: el.querySelector("h2").innerText,
-            url: el.href,
-            img: el.querySelector("img").dataset.src,
-            text: el.querySelector(".desc").innerText
-        }));
     }
 
 

@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
             nav.classList.add("active")
             App.location(nav.dataset.link)
         }, true)
+
+        App.on('click', ".details " ,(el)=>{
+            el.classList.toggle('active')
+        }, true)
     })
 
 

@@ -75,13 +75,11 @@ class Router
         [$className, $method] = $controller;
 
         if (class_exists($className)) {
-            $instance = new $className();
+
+            $instance = $this->createClass($className, $this->reflection($className, "__construct"));
 
             if (method_exists($instance, $method)) {
-                $data = $instance->$method($params);
-
-                // Проверка, являются ли данные массивом или объектом,
-                // который можно преобразовать в массив
+                $data = $this->callMethod($instance, $method, $this->reflection($className, $method));
                 if (is_array($data) || ($data instanceof \ArrayAccess && $data instanceof \Traversable)) {
                     header('Content-Type: application/json');
                     echo json_encode($data);
@@ -98,6 +96,43 @@ class Router
 
         // Если контроллер или метод не найдены
         echo '404 Not Found';
+    }
+
+    private function reflection($class, $method): array
+    {
+        $reflectionClass = new \ReflectionClass($class);
+        if (!$reflectionClass->hasMethod($method)) {
+            return [];
+        }
+
+        $methodReflection = $reflectionClass->getMethod($method);
+        $parameters = $methodReflection->getParameters();
+
+        $args = [];
+        foreach ($parameters as $parameter) {
+            $parameterClass = $parameter->getClass();
+
+            if ($parameterClass !== null && class_exists($parameterClass->name)) {
+                $args[] = $this->createClass($parameterClass->name, $this->reflection($parameterClass->name, '__construct'));
+            }
+        }
+        return $args;
+    }
+
+    private function callMethod($object, $methodName, $args)
+    {
+        return call_user_func_array([$object, $methodName], $args);
+    }
+
+
+    private function createClass($className, $args)
+    {
+        return call_user_func_array([$this, 'createInstance'], array_merge([$className], $args));
+    }
+
+    private function createInstance($className, ...$params)
+    {
+        return new $className(...$params);
     }
 
 

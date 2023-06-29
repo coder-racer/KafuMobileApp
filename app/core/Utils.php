@@ -42,11 +42,16 @@ function normalizeSlashes($string): array|string
     return str_replace('\\', '/', $string);
 }
 
-function dd($data): void
+function dump($data)
 {
     echo '<pre>';
     var_dump($data);
     echo '</pre>';
+}
+
+function dd($data): void
+{
+    dump($data);
     die();
 }
 
@@ -80,12 +85,13 @@ function validatePhone($string)
     return false;
 }
 
-function formatPhoneNumber($phoneNumber) {
+function formatPhoneNumber($phoneNumber)
+{
     // Удаляем все символы, кроме цифр
     $phoneNumber = preg_replace("/\D/", "", $phoneNumber);
 
     // Проверяем длину номера и первую цифру
-    if(strlen($phoneNumber) == 11 && $phoneNumber[0] == '7') {
+    if (strlen($phoneNumber) == 11 && $phoneNumber[0] == '7') {
         // Меняем формат номера
         return preg_replace("/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/", "+$1 ($2) $3-$4-$5", $phoneNumber);
     } else {

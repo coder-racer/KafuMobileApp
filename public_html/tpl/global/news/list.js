@@ -23,7 +23,7 @@ App.templates['global/news/list'] = () => {
     })
 
     App.on('click', ".new_item", (el)=>{
-        swal("Sdf");
+        window.open(el.dataset.href, "_blank")
     })
 
     function elementNew(data) {

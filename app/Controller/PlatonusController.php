@@ -2,34 +2,36 @@
 
 namespace Controller;
 
-use Services\Platonus;
+use Core\Request;
+use Services\PlatonusServices;
 
 class PlatonusController
 {
-    private Platonus $platonus;
+    private PlatonusServices $platonus;
 
-    public function __construct()
+    public function __construct(PlatonusServices $platonus)
     {
-        $this->platonus = new Platonus();
+        $this->platonus = $platonus;
     }
 
-    public function getUserData(): array
+    public function getUserData(Request $request): array
     {
-        return $this->platonus->getUserDataAction();
+        return $this->platonus->getUserDataAction($request->token);
     }
 
-    public function getJournal(): array
+    public function getJournal(Request $request): array
     {
-        return $this->platonus->getJournalAction();
+        return $this->platonus->getJournalAction(
+            $request->year,
+            $request->academic,
+            $request->JSESSIONID,
+            $request->token,
+            $request->userId
+        );
     }
 
-    public function getNews(): array
+    public function login(Request $request): array
     {
-        return $this->platonus->getNewsAction();
-    }
-
-    public function login(): array
-    {
-        return $this->platonus->loginAction();
+        return $this->platonus->loginAction($request->login, $request->pass);
     }
 }

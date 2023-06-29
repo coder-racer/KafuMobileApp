@@ -12,6 +12,9 @@
         }
     ],
     "require": {
-        "tecnickcom/tcpdf": "^6.6"
+        "tecnickcom/tcpdf": "^6.6",
+      "ext-curl": "*",
+        "symfony/dom-crawler": "^6.3",
+        "symfony/css-selector": "^6.3"
     }
 }

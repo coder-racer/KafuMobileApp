@@ -2,19 +2,20 @@
 
 namespace Controller;
 
-use Services\Moodle;
+use Core\Request;
+use Services\MoodleServices;
 
 class MoodleController
 {
-    private Moodle $moodle;
+    private MoodleServices $moodle;
 
-    public function __construct()
+    public function __construct(MoodleServices $moodle)
     {
-        $this->moodle = new Moodle();
+        $this->moodle = $moodle;
     }
 
-    public function getGrade()
+    public function getGrade(Request $request)
     {
-        return $this->moodle->getGrade($_POST['username'], $_POST['password']);
+        return $this->moodle->getGrade($request->username, $request->password);
     }
 }
