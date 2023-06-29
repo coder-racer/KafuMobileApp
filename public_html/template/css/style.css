@@ -1312,6 +1312,7 @@ select {
 .wp-block-gallery img {
     width: 100%;
     object-fit: cover;
+    border-radius: 9px;
 }
 #section_new{
     padding-bottom: 100px;
